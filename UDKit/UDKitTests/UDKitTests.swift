@@ -10,27 +10,34 @@ import XCTest
 @testable import UDKit
 
 class UDKitTests: XCTestCase {
-    
+
+    static let key = Key<User>("user")
+    static let user = User(name: "Steve", age: 55)
+
+    struct User: Codable {
+        var name: String
+        var age: Int
+    }
+
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        Defaults.clear(key: UDKitTests.key)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        Defaults.clear(key: UDKitTests.key)
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testGetSet() {
+        Defaults.set(value: UDKitTests.user, for: UDKitTests.key)
+
+        guard let nonNilExpected = Defaults.get(key: UDKitTests.key) else {
+            XCTFail()
+            return
         }
+
+        XCTAssertEqual(nonNilExpected.name, UDKitTests.user.name)
+        XCTAssertEqual(nonNilExpected.age, UDKitTests.user.age)
     }
-    
 }
