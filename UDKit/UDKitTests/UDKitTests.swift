@@ -12,6 +12,7 @@ import XCTest
 class UDKitTests: XCTestCase {
 
     static let key = Key<User>("user")
+    static let usersKey = Key<[User]>("user")
     static let user = User(name: "Steve", age: 55)
 
     struct User: Codable {
@@ -40,4 +41,21 @@ class UDKitTests: XCTestCase {
         XCTAssertEqual(nonNilExpected.name, UDKitTests.user.name)
         XCTAssertEqual(nonNilExpected.age, UDKitTests.user.age)
     }
+
+    func testGets() {
+
+        let users = [UDKitTests.user, UDKitTests.user]
+        Defaults.set(value: users, for: UDKitTests.usersKey)
+
+        guard let nonNilExpected = Defaults.get(key: UDKitTests.usersKey) else {
+            XCTFail()
+            return
+        }
+
+        for user in nonNilExpected {
+            XCTAssertEqual(user.name, UDKitTests.user.name)
+            XCTAssertEqual(user.age, UDKitTests.user.age)
+        }
+    }
+
 }
