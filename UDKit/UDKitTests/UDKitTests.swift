@@ -40,6 +40,16 @@ class UDKitTests: XCTestCase {
 
         XCTAssertEqual(nonNilExpected.name, UDKitTests.user.name)
         XCTAssertEqual(nonNilExpected.age, UDKitTests.user.age)
+
+        let stringKey = Key<String>("string")
+        Defaults.set(value: "string", for: stringKey)
+
+        guard let stringExpected = Defaults.get(key: stringKey) else {
+            XCTFail()
+            return
+        }
+
+        XCTAssertEqual(stringExpected, "string")
     }
 
     func testGets() {
