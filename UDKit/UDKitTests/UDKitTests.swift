@@ -68,4 +68,17 @@ class UDKitTests: XCTestCase {
         }
     }
 
+    func testSetCache() {
+
+        let result = Cache.set(value: UDKitTests.user, for: UDKitTests.key)
+
+        switch result {
+        case .success:
+            break
+        case .failed:
+            XCTFail()
+            return
+        }
+    }
+
 }
