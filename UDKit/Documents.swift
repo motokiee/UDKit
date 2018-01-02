@@ -1,28 +1,23 @@
 //
-//  Cache.swift
+//  Tmp.swift
 //  UDKit
 //
-//  Created by motokiee on 2018/01/01.
+//  Created by motokiee on 2018/01/02.
 //  Copyright © 2018年 motokiee. All rights reserved.
 //
 
 import Foundation
 
-public enum Result<Void, Error> {
-    case success
-    case failed(Error?)
-}
-
-public final class Cache {
+public final class Documents {
 
     private static let fileManager = FileManager.default
-    private static let cacheDirectory = fileManager.urls(for: .cachesDirectory, in: FileManager.SearchPathDomainMask.userDomainMask)[0]
+    private static let documentDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0]
 
     private init() {}
 
     public static func get<Value>(key: Key<Value>) -> Value? {
 
-        let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0]
+        let path = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]
         let filePath = path + "/" + key.key
 
         guard let data = fileManager.contents(atPath: filePath) else {
@@ -42,7 +37,7 @@ public final class Cache {
 
     public static func set<Value>(value: Value, for key: Key<Value>) -> Result<Void, Error?> {
 
-        let filePath = cacheDirectory.appendingPathComponent(key.key)
+        let filePath = documentDirectory.appendingPathComponent(key.key)
 
         let encoder = JSONEncoder()
         guard let encoded = try? encoder.encode(value) else {
@@ -52,13 +47,14 @@ public final class Cache {
         do {
             try encoded.write(to: filePath)
             return .success
+
         } catch let error {
             return .failed(error)
         }
     }
 
     public static func clear<Value>(key: Key<Value>) {
-        let filePath = cacheDirectory.appendingPathComponent(key.key)
+        let filePath = documentDirectory.appendingPathComponent(key.key)
         try? fileManager.removeItem(at: filePath)
     }
 

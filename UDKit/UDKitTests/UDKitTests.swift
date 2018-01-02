@@ -68,7 +68,7 @@ class UDKitTests: XCTestCase {
         }
     }
 
-    func testSetCache() {
+    func testCacheDirectory() {
 
         let result = Cache.set(value: UDKitTests.user, for: UDKitTests.key)
 
@@ -79,6 +79,29 @@ class UDKitTests: XCTestCase {
             XCTFail()
             return
         }
+
+        XCTAssertNotNil(Cache.get(key: UDKitTests.key))
+
+        Cache.clear(key: UDKitTests.key)
+        XCTAssertNil(Cache.get(key: UDKitTests.key))
+    }
+
+    func testDocumentDirectory() {
+
+        let result = Documents.set(value: UDKitTests.user, for: UDKitTests.key)
+
+        switch result {
+        case .success:
+            break
+        case .failed:
+            XCTFail()
+            return
+        }
+
+        XCTAssertNotNil(Documents.get(key: UDKitTests.key))
+
+        Documents.clear(key: UDKitTests.key)
+        XCTAssertNil(Documents.get(key: UDKitTests.key))
     }
 
 }
