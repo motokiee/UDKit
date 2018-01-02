@@ -8,11 +8,6 @@
 
 import Foundation
 
-public enum Result<Void, Error> {
-    case success
-    case failed(Error?)
-}
-
 public final class Cache {
 
     private static let fileManager = FileManager.default

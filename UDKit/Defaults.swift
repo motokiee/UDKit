@@ -7,15 +7,6 @@
 
 import Foundation
 
-public struct Key<Value: Codable> {
-    public let key: String
-
-    public init(_ key: String) {
-        self.key = key
-    }
-}
-
-
 public final class Defaults {
     private static let userDefaults = UserDefaults.standard
     private init() {}

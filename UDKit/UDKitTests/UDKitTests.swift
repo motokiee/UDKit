@@ -9,18 +9,31 @@
 import XCTest
 @testable import UDKit
 
+class UDUser: NSObject, Codable {
+    var name: String
+    var age: Int
+
+    init(name: String, age: Int) {
+        self.name = name
+        self.age = age
+    }
+}
+
 class UDKitTests: XCTestCase {
 
     static let key = Key<User>("user")
     static let usersKey = Key<[User]>("user")
     static let user = User(name: "Steve", age: 55)
 
+    static let udUser = UDUser(name: "Steve", age: 55)
+    static let udUserKey = Key<UDUser>("user")
+
     struct User: Codable {
         var name: String
         var age: Int
     }
 
-    override func setUp() {
+   override func setUp() {
         super.setUp()
         Defaults.clear(key: UDKitTests.key)
     }
@@ -104,4 +117,9 @@ class UDKitTests: XCTestCase {
         XCTAssertNil(Documents.get(key: UDKitTests.key))
     }
 
+    func testMemCache() {
+        let cache = MemCache<UDUser>()
+        cache.set(value: UDKitTests.udUser, for: UDKitTests.udUserKey)
+        XCTAssertNotNil(cache.get(key: UDKitTests.udUserKey))
+    }
 }
