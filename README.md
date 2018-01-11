@@ -1,7 +1,7 @@
 
 # LocalDataStore
 
-**This library is under development and will be renamed to LocalDataStore**
+:warning: **This library is under development and will be renamed to LocalDataStore**
 
 LocalDataStore provides wrapper classes for local storage like UserDefaults, NSCache and FileManager.
 
